@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Sorteio {
 
-		private int id;
+		private long id;
 		private Date dataAbertura;
 		private Date dataEncerramento;
 		private int rangeNumeros;
@@ -22,7 +22,7 @@ public class Sorteio {
 			
 		}
 
-		public Sorteio(int id, Date dataAbertura, Date dataEncerramento, int rangeNumeros, double valorAposta,
+		public Sorteio(long id, Date dataAbertura, Date dataEncerramento, int rangeNumeros, double valorAposta,
 				int numerosPorAposta) {
 			
 			this.id = id;
@@ -33,7 +33,7 @@ public class Sorteio {
 			this.numerosPorAposta = numerosPorAposta;
 		}
 
-		public int getId() {
+		public long getId() {
 			return id;
 		}
 

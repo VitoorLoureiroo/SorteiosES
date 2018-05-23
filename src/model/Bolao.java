@@ -1,18 +1,17 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Bolao {
 
 		//private 
-	private ArrayList<Apostador> apostadores = new ArrayList<>();
+	private String[] apostadores;
 	private int numeros[];
-	private int idSorteio;
+	private long idSorteio;
 	private Date data;
 	private double valor;
 	
-	public Bolao(ArrayList<Apostador> apostadores, int[] numeros, int idSorteio, Date data, double valor) {
+	public Bolao(String [] apostadores, int[] numeros, long idSorteio, Date data, double valor) {
 		
 		this.apostadores = apostadores;
 		this.numeros = numeros;
@@ -20,6 +19,28 @@ public class Bolao {
 		this.data = data;
 		this.valor = valor;
 	}
+
+	public String[] getApostadores() {
+		return apostadores;
+	}
+
+	public int[] getNumeros() {
+		return numeros;
+	}
+
+	public long getIdSorteio() {
+		return idSorteio;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public double getValor() {
+		return valor;
+	}
+	
+	
 	
 
 }
