@@ -10,6 +10,7 @@ public class Aposta {
 	private String cpfApostador;
 	private int idSorteio;
 	
+	//teste
 	//alt + shift + s, depois 'O'
 	public Aposta(int[] numeros, double valor, Date data, String cpfApostador, int idSorteio) {
 		
