@@ -103,6 +103,50 @@ public class BolaoDAOImpl implements BolaoDAO {
 		
 		return lista;
 	}
+
+	@Override
+	public List<Bolao> pesquisarBolaoPorSorteio(long idSorteio) {
+		Connection con = getConnection();
+		List<Bolao> lista = new ArrayList<>();
+		String sql = "SELECT * FROM bolao WHERE id_sorteio = ?";
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setLong(1, idSorteio);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) { 
+				
+				String num = rs.getString("numeros");
+				
+				String[] stringArray = num.split(",");
+				
+				int[] intArray = new int[stringArray.length];
+			     for (int i = 0; i < stringArray.length; i++) {
+			         String numberAsString = stringArray[i];
+			         intArray[i] = Integer.parseInt(numberAsString);
+			      }
+			     
+			     String apostadores = rs.getString("apostadores");
+					
+			     String[] stringArrayApostadores = apostadores.split(",");
+				
+				Bolao bolao = new Bolao(stringArrayApostadores,
+								intArray,
+								rs.getLong("id_sorteio"),
+								rs.getDate("data"),
+								rs.getDouble("valor")
+								);
+				
+			lista.add( bolao );
+			
+			}
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return lista;
+	}
 	
 	
 

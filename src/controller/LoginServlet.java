@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 		List<Apostador> lista =apostadorDao.pesquisarApostador(request.getParameter("cpf"));
 		if (lista.size()!=0) {
 			if(lista.get(0).getSenha().equals(request.getParameter("senha"))){
-				response.sendRedirect("./sorteios.jsp");
+				response.sendRedirect("./apostas.jsp?sorteioId=1");
 			}else {		
 				String message = "Senha Inválida.";
 				request.getSession().setAttribute("MESSAGE", message);

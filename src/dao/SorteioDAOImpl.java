@@ -107,5 +107,35 @@ public class SorteioDAOImpl implements SorteioDAO{
 		}
 		return lista;
 	}
+
+	@Override
+	public List<Sorteio> pesquisarSorteiosPorID(long id) {
+		Connection con = getConnection();
+		List<Sorteio> lista = new ArrayList<>();
+		String sql = "SELECT * FROM sorteio "
+					+"WHERE id = ?";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setLong(1,  id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) { 
+				Sorteio sorteio = 
+						new Sorteio(rs.getLong("id"),
+								rs.getDate("data_abertura"),
+								rs.getDate("data_encerramento"),
+								rs.getInt("range_numeros"),
+								rs.getInt("valor_aposta"),
+								rs.getInt("numeros_por_aposta"));
+				if (sorteio.getDataEncerramento().after(new java.util.Date())) {
+					lista.add( sorteio );
+				}
+			
+			}
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 	
 }
