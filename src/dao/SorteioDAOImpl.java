@@ -25,7 +25,7 @@ public class SorteioDAOImpl implements SorteioDAO{
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
 			// Look up our data source
-			DataSource ds = (DataSource) envCtx.lookup("jdbc/SorteioDB");
+			DataSource ds = (DataSource) envCtx.lookup("jdbc/sorteioDB");
 			return ds.getConnection();		
 		} catch (NamingException e) {
 			e.printStackTrace();
@@ -39,7 +39,7 @@ public class SorteioDAOImpl implements SorteioDAO{
 	public void adicionarSorteio(Sorteio sorteio) {
 		Connection con = getConnection();
 		String sql = "INSERT INTO sorteio "
-				+ "(id, data_abertura, data_encerramento, range_numeros, valor_aposta, numeros_por_aposta) "
+				+ "(id_sorteio, data_abertura, data_encerramento, range_numeros, valor_aposta, numeros_por_aposta) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -96,7 +96,7 @@ public class SorteioDAOImpl implements SorteioDAO{
 								rs.getInt("range_numeros"),
 								rs.getInt("valor_aposta"),
 								rs.getInt("numeros_por_aposta"));
-				if (sorteio.getDataEncerramento().before(new java.util.Date())) {
+				if (sorteio.getDataEncerramento().after(new java.util.Date())) {
 					lista.add( sorteio );
 				}
 			

@@ -23,7 +23,7 @@ public class ApostadorDAOImpl implements ApostadorDAO{
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
 			// Look up our data source
-			DataSource ds = (DataSource) envCtx.lookup("jdbc/SorteioDB");
+			DataSource ds = (DataSource) envCtx.lookup("jdbc/sorteioDB");
 			return ds.getConnection();		
 		} catch (NamingException e) {
 			e.printStackTrace();
