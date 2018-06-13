@@ -11,7 +11,7 @@ $(document).ready(function ()  {
 	var params = (new URL(document.location)).searchParams;
 	var number = params.get("numPorAposta");			
 	var container = document.getElementById("numeros");			        
-	while (container.hasChildNodes()) {
+	while (container.hasChildNodess()) {
 		container.removeChild(container.lastChild);
 	}
 	for (i=0;i<number;i++){

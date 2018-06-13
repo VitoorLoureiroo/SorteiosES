@@ -38,13 +38,14 @@ public class AdministradorDAOImpl implements AdministradorDAO{
 	public void adicionarAdm(Administrador adm) {
 		Connection con = getConnection();
 		String sql = "INSERT INTO adm "
-				+ "(nome, senha) "
-				+ "VALUES (?, ?)";
+				+ "(nome, senha, cpf) "
+				+ "VALUES (?, ?,?)";
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1,  adm.getNome());
 		
 			stmt.setString(2,  adm.getSenha());
+			stmt.setString(3,  adm.getCpf());
 			
 			stmt.executeUpdate();
 			con.close();
@@ -55,18 +56,19 @@ public class AdministradorDAOImpl implements AdministradorDAO{
 	}
 
 	@Override
-	public List<Administrador> pesquisarAdm(String nome) {
+	public List<Administrador> pesquisarAdm(String cpf) {
 		Connection con = getConnection();
 		List<Administrador> lista = new ArrayList<>();
-		String sql = "SELECT * FROM adm WHERE nome like ?";
+		String sql = "SELECT * FROM adm WHERE cpf like ?";
 		
 		try {
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, "%" + nome + "%");
+			stmt.setString(1, "%" + cpf + "%");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) { 
 				Administrador adm = new Administrador(rs.getString("nome"),
-								rs.getString("senha"));
+								rs.getString("senha"),
+								rs.getString("cpf"));
 				
 			lista.add( adm );
 			

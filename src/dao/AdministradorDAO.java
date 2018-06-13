@@ -6,5 +6,5 @@ import model.Administrador;
 
 public interface AdministradorDAO {
 	void adicionarAdm(Administrador adm);
-	List<Administrador> pesquisarAdm(String nome);
+	List<Administrador> pesquisarAdm(String cpf);
 }

@@ -27,15 +27,15 @@ $(document).ready(function ()  {
 					 	destroy : true,
 				        data: msg,
 				        columns: [
-				            { data:"nome", title: "Organizador" },
-				            { data:"part", title: "Participantes" },
+				            { data:"organizador", title: "Organizador" },
+				            { data:"numPart", title: "Participantes" },
 				            { data:"dataAbertura", title: "Data de Abertura" },
-				            { data:"dataEncerramento", title: "Data de Encerramento" },
-				            { data:"numIncial", title: "Números Apostados" }
+				            { data:"dataEnc", title: "Data de Encerramento" },
+				            { data:"numApostados", title: "Números Apostados" }
 				        ]
 				    } );
 				 
-				 var number = msg.numPorAposta;
+				 var number = msg[0].numPorAposta;
 			     var container = document.getElementById("numeros");			        
 			     while (container.hasChildNodes()) {
 			     	container.removeChild(container.lastChild);
@@ -44,8 +44,9 @@ $(document).ready(function ()  {
 			     	var input = document.createElement("input");
 			     	input.type = "text";
 			     	input.name = "number" + i;
+			     	input.style = "width: 50px; margin-left: 10px;"
 			     	container.appendChild(input);			         
-			     	container.appendChild(document.createElement("br"));
+			     	//container.appendChild(document.createElement("br"));
 			        }
 			} 
 	});
@@ -57,16 +58,22 @@ $(document).ready(function ()  {
 <title>SorteioES</title>
 </head>
 <body>
-<div class="row">
-		<div class="col-sm">
-			<label>Números</label>
-			<div id="numeros" name="numeros">
-			</div>
-		</div>
+<h1>Aposta</h1>
+
+<div>
+	<label>Números: </label>
+	<div id="numeros" name="numeros" style = "display: inline-block;">
+	</div>
+	<button style="margin-left: 40px;">Apostar</button>
 </div>
-<div class="container">
-			<table id="tabela"></table>
-		</div>
+
+<h1 style="margin-top: 30px;" >Bolão</h1>
+
+<div style="margin-top: 30px;">
+	<table id="tabela"></table>
+</div>
+
+<button>Criar Bolão</button>
 
 </body>
 </html>

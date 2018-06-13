@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.AdministradorDAO;
+import dao.AdministradorDAOImpl;
 import dao.ApostadorDAO;
 import dao.ApostadorDAOImpl;
+import model.Administrador;
 import model.Apostador;
 
 /**
@@ -36,16 +39,31 @@ public class LoginServlet extends HttpServlet {
 		System.out.println( "tem coisa" );
 		ApostadorDAO apostadorDao = new ApostadorDAOImpl();
 		List<Apostador> lista =apostadorDao.pesquisarApostador(request.getParameter("cpf"));
+		
+		
+		
+		AdministradorDAO admDao = new AdministradorDAOImpl();
+		List<Administrador> listaAdm = admDao.pesquisarAdm(request.getParameter("cpf"));
+		
 		if (lista.size()!=0) {
 			if(lista.get(0).getSenha().equals(request.getParameter("senha"))){
-				response.sendRedirect("./apostas.jsp?sorteioId=1");
-			}else {		
-				String message = "Senha Inválida.";
-				request.getSession().setAttribute("MESSAGE", message);
+				response.sendRedirect("./sorteios.jsp");
+				request.getSession().setAttribute("USER", "user");
 			}
 		}
-		
+		else if (listaAdm.size()!=0) {
+			if(listaAdm.get(0).getSenha().equals(request.getParameter("senha"))){
+				response.sendRedirect("./sorteios.jsp");
+				request.getSession().setAttribute("USER", "adm");
+			}
+		}
+		else {		
+				String message = "Cpf ou Senha Invalidos.";
+				request.getSession().setAttribute("MESSAGE", message);
+			}
 	}
+		
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

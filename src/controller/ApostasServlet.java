@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -73,10 +75,11 @@ public class ApostasServlet extends HttpServlet {
 		BolaoDAO bolaoDao = new BolaoDAOImpl();
 		List<Bolao> bolaoList = bolaoDao.pesquisarBolaoPorSorteio(sorteioId);
 		Bolao bolao =  bolaoList.get(0);
-		ViewModelApostas apostasView = new ViewModelApostas(bolao.getApostadores(),bolao.getNumeros(),bolao.getIdSorteio(),bolao.getData(),bolao.getValor(),0);
+		ViewModelApostas apostasView = new ViewModelApostas(bolao.getApostadores()[0],bolao.getApostadores().length,bolao.getData(),bolao.getData(),Arrays.toString(bolao.getNumeros()));
 		apostasView.setNumPorAposta(sorteios.get(0).getNumerosPorAposta());
-		
-		String jsonTexto = mapper.writeValueAsString( apostasView );
+		List<ViewModelApostas> listaView = new ArrayList<>();
+		listaView.add(apostasView);
+		String jsonTexto = mapper.writeValueAsString( listaView );
 		
 		response.setContentType("application/json");
 		response.setStatus(200);

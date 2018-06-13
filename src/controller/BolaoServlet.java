@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.BolaoDAO;
+import dao.BolaoDAOImpl;
+import model.Bolao;
+
 /**
  * Servlet implementation class BolaoServlet
  */
@@ -35,6 +39,8 @@ public class BolaoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//Bolao bolao = new Bolao(2,2,2);
+		BolaoDAO bolaoDao = new BolaoDAOImpl();
 		doGet(request, response);
 	}
 

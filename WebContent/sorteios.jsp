@@ -22,7 +22,7 @@ $(document).ready(function ()  {
 			data : strQuery,
 			success : function(msg, a, b) {
 				console.log( "Recebido : " + msg );
-				 $('#tabela').DataTable( {
+				var table =  $('#tabela').DataTable( {
 					 	destroy : true,
 				        data: msg,
 				        columns: [
@@ -31,16 +31,27 @@ $(document).ready(function ()  {
 				            { data:"dataEncerramento", title: "Data de Encerramento" }
 				        ]
 				    } );
+				
+				$('#tabela tbody').on('click', 'tr', function () {
+			        var data = table.row( this ).data();
+			        document.location.href= "apostas.jsp?sorteioId=" + data.id;
+			     
+			    } );
+				 
+				 
 			} 
 	});
+	
+	    
 	
 })
 
 </script>
-<title>Insert title here</title>
+<title>SorteioES</title>
 </head>
 <body>
-<div class="container">
+<h1>Busca Sorteios</h1>
+<div style= "padding-top:10px;">
 			<table id="tabela"></table>
 		</div>
 
