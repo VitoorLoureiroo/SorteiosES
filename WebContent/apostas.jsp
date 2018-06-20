@@ -13,8 +13,11 @@
 <script type="text/javascript" src="./resources/Buttons-1.5.1/js/buttons.colVis.min.js"></script>
 <script>
 $(document).ready(function ()  {
+	
 	var params = (new URL(document.location)).searchParams;
 	var id = params.get("sorteioId");
+	
+	
 
 	$.ajax({
 			type : "POST",
@@ -23,7 +26,7 @@ $(document).ready(function ()  {
 			data : id,
 			success : function(msg, a, b) {
 				console.log( "Recebido : " + msg );
-				 $('#tabela').DataTable( {
+				var table = $('#tabela').DataTable( {
 					 	destroy : true,
 				        data: msg,
 				        columns: [
@@ -33,6 +36,22 @@ $(document).ready(function ()  {
 				            { data:"dataEnc", title: "Data de Encerramento" },
 				            { data:"numApostados", title: "Números Apostados" }
 				        ]
+				    } );
+				 
+				 $('#tabela tbody').on('click', 'tr', function () {
+				        var data = table.row( this ).data();
+				        //document.location.href= "apostas.jsp?sorteioId=" + data.id;
+				        if(window.confirm("Você deseja entrar neste bolão?")){
+				        	$.ajax({
+				    			type : "POST",
+				    			url : "./ApostasServlet",
+				    			contentType : "application/json",
+				    			data : data.organizador,
+				    			success : function(msg, a, b) {
+										
+				    			} 
+				    	});
+				        }
 				    } );
 				 
 				 var number = msg[0].numPorAposta;
@@ -52,7 +71,16 @@ $(document).ready(function ()  {
 	});
 	
 	
-})
+});
+
+function getSorteioId(){
+	var params = (new URL(document.location)).searchParams;
+	return params.get("sorteioId");
+}
+
+function showAlert(){
+	alert("Aposta Efetuada");
+	}
 
 </script>
 <title>SorteioES</title>
@@ -61,10 +89,13 @@ $(document).ready(function ()  {
 <h1>Aposta</h1>
 
 <div>
+	<form style="margin-left: 40px;" action="ApostasServlet" method="post" >
 	<label>Números: </label>
 	<div id="numeros" name="numeros" style = "display: inline-block;">
 	</div>
-	<button style="margin-left: 40px;">Apostar</button>
+	
+		<button  id="btnCriarAposta"  name="btn" value="redirectAposta" onclick="showAlert()">Apostar</button>
+	<form >
 </div>
 
 <h1 style="margin-top: 30px;" >Bolão</h1>
@@ -73,7 +104,9 @@ $(document).ready(function ()  {
 	<table id="tabela"></table>
 </div>
 
-<button>Criar Bolão</button>
+<form action="ApostasServlet" method="post" >
+<button id="btnCriarBolao"  name="btn" value="redirectBolao">Criar Bolão</button>
+<form >
 
 </body>
 </html>

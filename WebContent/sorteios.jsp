@@ -42,6 +42,17 @@ $(document).ready(function ()  {
 			} 
 	});
 	
+	 function showButton(){
+	        if(session.getAttribute("USER")=="adm"){
+	            $("#btnCriarSorteio").show();
+	        }
+	        else {
+	            $("#btnCriarSorteio").hide();
+	        }
+	    }
+	
+	 
+	
 	    
 	
 })
@@ -54,6 +65,9 @@ $(document).ready(function ()  {
 <div style= "padding-top:10px;">
 			<table id="tabela"></table>
 		</div>
+<form action="SorteioServlet" method="post" >
+<button  id="btnCriarSorteio"  name="btnCriarSorteio" value="redirectCadastro" onload="showButton()">Criar Sorteio</button>
+</form>
 
 </body>
 </html>

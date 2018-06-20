@@ -49,12 +49,14 @@ public class LoginServlet extends HttpServlet {
 			if(lista.get(0).getSenha().equals(request.getParameter("senha"))){
 				response.sendRedirect("./sorteios.jsp");
 				request.getSession().setAttribute("USER", "user");
+				request.getSession().setAttribute("CPF", request.getParameter("cpf"));
 			}
 		}
 		else if (listaAdm.size()!=0) {
 			if(listaAdm.get(0).getSenha().equals(request.getParameter("senha"))){
 				response.sendRedirect("./sorteios.jsp");
 				request.getSession().setAttribute("USER", "adm");
+				request.getSession().setAttribute("CPF", request.getParameter("cpf"));
 			}
 		}
 		else {		

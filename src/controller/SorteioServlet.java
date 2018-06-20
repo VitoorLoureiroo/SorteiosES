@@ -37,29 +37,34 @@ public class SorteioServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String valueBtn = request.getParameter("btnCriarSorteio");
+		if(valueBtn!=null && valueBtn.equals("redirectCadastro")) {
+			response.sendRedirect("./cadastroSorteio.jsp");
+		}else {
+			ObjectMapper mapper = new ObjectMapper();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			mapper.setDateFormat(sdf);
+			
+			SorteioDAO sorteioDao = new SorteioDAOImpl();
+			List<Sorteio> bos = sorteioDao.pesquisarSorteios();
+			
 
-		ObjectMapper mapper = new ObjectMapper();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		mapper.setDateFormat(sdf);
+			String jsonTexto = mapper.writeValueAsString( bos );
+			
+			response.setContentType("application/json");
+			response.setStatus(200);
+			response.getWriter().println(jsonTexto);
+			response.getWriter().flush();	
+		}
 		
-		SorteioDAO sorteioDao = new SorteioDAOImpl();
-		List<Sorteio> bos = sorteioDao.pesquisarSorteios();
-		
-
-		String jsonTexto = mapper.writeValueAsString( bos );
-		
-		response.setContentType("application/json");
-		response.setStatus(200);
-		response.getWriter().println(jsonTexto);
-		response.getWriter().flush();
 	}
 
 }

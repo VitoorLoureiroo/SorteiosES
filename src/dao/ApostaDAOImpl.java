@@ -78,7 +78,7 @@ public class ApostaDAOImpl implements ApostaDAO{
 				
 				String num = rs.getString("numeros");
 				
-				String[] stringArray = num.split(",");
+				String[] stringArray = num.replace("[","").replace("]","").split(", ");
 				
 				int[] intArray = new int[stringArray.length];
 			     for (int i = 0; i < stringArray.length; i++) {

@@ -39,6 +39,12 @@ public class Bolao {
 	public double getValor() {
 		return valor;
 	}
+
+	public void setNumeros(int[] numeros) {
+		this.numeros = numeros;
+	}
+	
+	
 	
 	
 	

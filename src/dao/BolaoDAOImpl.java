@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -15,6 +16,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import model.Bolao;
+import model.Sorteio;
 
 public class BolaoDAOImpl implements BolaoDAO {
 	private Connection getConnection() {
@@ -59,6 +61,28 @@ public class BolaoDAOImpl implements BolaoDAO {
 		}
 		
 	}
+	
+	@Override
+	public void updateBolao(Bolao bolao) {
+		Connection con = getConnection();
+		String sql = "UPDATE  bolao "
+				+ "SET numeros = ? "
+				+ "WHERE apostadores like ?";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1,  Arrays.toString(bolao.getNumeros()));
+			stmt.setString(2, Arrays.toString(bolao.getApostadores()));
+			
+		
+			
+			stmt.executeUpdate();
+			con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	@Override
 	public List<Bolao> pesquisarBolaoGanhador(int[] numeros) {
@@ -73,8 +97,7 @@ public class BolaoDAOImpl implements BolaoDAO {
 			while (rs.next()) { 
 				
 				String num = rs.getString("numeros");
-				
-				String[] stringArray = num.split(",");
+				String[] stringArray = num.replace("[","").replace("]","").split(",");
 				
 				int[] intArray = new int[stringArray.length];
 			     for (int i = 0; i < stringArray.length; i++) {
@@ -118,7 +141,7 @@ public class BolaoDAOImpl implements BolaoDAO {
 				
 				String num = rs.getString("numeros");
 				
-				String[] stringArray = num.split(",");
+				String[] stringArray = num.replace("[","").replace("]","").split(", ");
 				
 				int[] intArray = new int[stringArray.length];
 			     for (int i = 0; i < stringArray.length; i++) {
@@ -146,6 +169,73 @@ public class BolaoDAOImpl implements BolaoDAO {
 		}
 		
 		return lista;
+	}
+
+	@Override
+	public void adicionarAposta(String organizador) {
+		Connection con = getConnection();
+		List<Bolao> lista = new ArrayList<>();
+		String sql = "SELECT * FROM bolao WHERE apostadores like ?";
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, "%" + organizador + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) { 
+				
+				String num = rs.getString("numeros");
+				String[] stringArray = num.replace("[","").replace("]","").split(", ");
+				
+				int[] intArray = new int[stringArray.length];
+			     for (int i = 0; i < stringArray.length; i++) {
+			         String numberAsString = stringArray[i];
+			         intArray[i] = Integer.parseInt(numberAsString);
+			      }
+			     
+			     String apostadores = rs.getString("apostadores");
+					
+			     String[] stringArrayApostadores = apostadores.replace("[","").replace("]","").split(", ");
+				
+				Bolao bolao = new Bolao(stringArrayApostadores,
+								intArray,
+								rs.getLong("id_sorteio"),
+								rs.getDate("data"),
+								rs.getDouble("valor")
+								);
+				
+			lista.add( bolao );
+			
+			}
+			
+			if(lista.size()>0) {
+				int [] numeros = new int [lista.get(0).getNumeros().length + 1];
+				
+				
+						
+				for(int i=0; i<=lista.get(0).getNumeros().length-1; i++) {
+					numeros[i] = lista.get(0).getNumeros()[i];
+				};
+				
+				SorteioDAO sorteioDao = new SorteioDAOImpl();
+				List<Sorteio> sorteio = sorteioDao.pesquisarSorteiosPorID(lista.get(0).getIdSorteio());
+				
+				Random r = new Random();
+				int Low = 1;
+				int High = sorteio.get(0).getRangeNumeros();
+				int Result = r.nextInt(High-Low) + Low;
+				numeros[numeros.length-1] = Result;
+				
+				lista.get(0).setNumeros(numeros);
+				
+				updateBolao(lista.get(0));
+				
+				
+			}
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

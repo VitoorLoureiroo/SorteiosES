@@ -5,21 +5,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="./CSS/style.css">
-
+<script src="./resources/js/jquery-3.3.1.js"></script>		
+<script src="./resources/js/bootstrap.min.js"></script>
 <script>
-$(document).ready(function ()  {
+$(document).ready(function (){
 	var params = (new URL(document.location)).searchParams;
 	var number = params.get("numPorAposta");			
 	var container = document.getElementById("numeros");			        
-	while (container.hasChildNodess()) {
+	while (container.hasChildNodes()) {
 		container.removeChild(container.lastChild);
 	}
 	for (i=0;i<number;i++){
 		var input = document.createElement("input");
 		input.type = "text";
 		input.name = "number" + i;
+		input.style = "width: 50px; margin-left: 10px;"
 		container.appendChild(input);			         
-		container.appendChild(document.createElement("br"));
 	}
 } 
 );
@@ -27,21 +28,16 @@ $(document).ready(function ()  {
 <title>SorteioES</title>
 </head>
 <body>
-<div class="center-div">
-<form action="BolaoServlet" method="post">
-	<div class="row">
-		<div class="col-sm">
-			<label>Aposta Inicial</label>
-			<div class="row">
-				<div class="col-sm">
-				<label>Aposta Inicial:</label>
-				<div id="numeros" name="numeros">
-			</div>
-		</div>
+
+<div>
+<form style="margin-left: 40px;" action="BolaoServlet" method="post" >
+	<label>Aposta Inicial: </label>
+	<div id="numeros" name="numeros" style = "display: inline-block;">
 	</div>
-	<button name=btn value="salvar">Salvar</button>
-</form>
-</div>
-					
+	
+		<button  id="salvar"  name="btn" value="salvar">Salvar</button>
+	</form>
+
+</div>				
 </body>
 </html>
